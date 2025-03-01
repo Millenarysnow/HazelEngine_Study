@@ -79,7 +79,7 @@ namespace Hazel {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MouseButtonReleased)
+		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
 	class HAZEL_API MouseButtonReleasedEvent : public MouseButtonEvent

@@ -7,6 +7,7 @@
 
 namespace Hazel {
 
+	// 事件类型
 	enum class EventType
 	{
 		None = 0,
@@ -16,6 +17,7 @@ namespace Hazel {
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
+	// 事件标签
 	// 使用按位存储是因为，这样可以实现标签的嵌套
 	// 比如鼠标标签和键盘标签都属于输入标签
 	enum EventCategory
@@ -28,12 +30,19 @@ namespace Hazel {
 		EventCategoryMouseButton = BIT(4)
 	};
 
+// 定义一些事件类中需要的有关类型的操作：
+// GetStaticType()
+// GetEventType()
+// GetName()
 #define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 
+// 定义一些事件类中需要的有关标签的操作：
+// GetCategoryFlags()
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
+	// 事件基类
 	class HAZEL_API Event
 	{
 		friend class EventDispatcher;
@@ -42,7 +51,10 @@ namespace Hazel {
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual int GetCategoryFlags() const = 0;
-		virtual std::string ToString() const { return GetName(); } // 调试工具，可以重写以便于该事件可以输出一些调试字符串
+
+		// 调试工具，可以重写以便于该事件可以输出一些调试字符串
+		// 当前为输出类的名字
+		virtual std::string ToString() const { return GetName(); } 
 
 		inline bool IsInCategory(EventCategory category)
 		{
